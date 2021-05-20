@@ -1,0 +1,70 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      border: none;
+      border-bottom: 1px solid #6b6b6b;
+      outline: none;
+    }
+
+    button {
+      padding: 1rem;
+      border: 1px solid #6b6b6b;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: filter font-weight 0.3s;
+
+      &:hover {
+        filter: brightness(0.9);
+        font-weight: bold;
+      }
+    }
+  }
+
+  .infoContainer {
+    padding: 1rem;
+    border: 1px solid #6b6b6b;
+    margin-top: 1rem;
+
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    p:not(:first-child) {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .emptyContainer {
+    padding: 1rem;
+    margin-top: 1rem;
+
+    p {
+      font-size: 1rem;
+    }
+  }
+}
