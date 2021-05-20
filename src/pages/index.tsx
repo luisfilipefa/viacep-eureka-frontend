@@ -18,13 +18,15 @@ export default function Home() {
   const searchRef = useRef<HTMLInputElement>();
 
   const handleSearchCep = async (event: FormEvent) => {
-    event.preventDefault();
-    setIsSearching(true);
-
     try {
+      event.preventDefault();
+
+      setIsSearching(true);
+
       const { data } = await api.get(`/cep/${searchRef.current.value}`);
 
       setIsSearching(false);
+
       if (data.data.erro) {
         setCepInfo(null);
         return;
