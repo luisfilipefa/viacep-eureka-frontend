@@ -1,5 +1,6 @@
 import { FormEvent, useRef, useState } from "react";
 
+import { FiX } from "react-icons/fi";
 import { api } from "../services/api";
 import styles from "../styles/home.module.scss";
 
@@ -13,7 +14,7 @@ interface CepInfo {
 }
 
 export default function Home() {
-  const [cepInfo, setCepInfo] = useState<CepInfo | null>();
+  const [cepInfo, setCepInfo] = useState<CepInfo | null | undefined>(null);
   const [isSearching, setIsSearching] = useState(false);
   const searchRef = useRef<HTMLInputElement>();
 
@@ -28,7 +29,7 @@ export default function Home() {
       setIsSearching(false);
 
       if (data.data.erro) {
-        setCepInfo(null);
+        setCepInfo(undefined);
         return;
       }
 
@@ -39,11 +40,21 @@ export default function Home() {
     }
   };
 
+  const handleClearSearch = () => {
+    searchRef.current.value = "";
+    setCepInfo(null);
+  };
+
   return (
     <div className={styles.container}>
       <h1>CEP Helper</h1>
       <form onSubmit={handleSearchCep}>
-        <input type="text" placeholder="Digite um cep" ref={searchRef} />
+        <div>
+          <input type="text" placeholder="Digite um cep" ref={searchRef} />
+          <button onClick={handleClearSearch}>
+            <FiX />
+          </button>
+        </div>
         <button type="submit">
           {isSearching ? <div className={styles.spinner} /> : "Buscar"}
         </button>
@@ -63,10 +74,12 @@ export default function Home() {
             <strong>Bairro</strong>: {cepInfo.bairro}
           </p>
         </div>
-      ) : (
+      ) : typeof cepInfo === "undefined" ? (
         <div className={styles.emptyContainer}>
           <p>Ops, não consegui encontrar nenhuma informação.</p>
         </div>
+      ) : (
+        ""
       )}
     </div>
   );
