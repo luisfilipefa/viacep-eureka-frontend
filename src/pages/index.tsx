@@ -14,19 +14,27 @@ interface CepInfo {
 
 export default function Home() {
   const [cepInfo, setCepInfo] = useState<CepInfo | null>();
+  const [isSearching, setIsSearching] = useState(false);
   const searchRef = useRef<HTMLInputElement>();
 
   const handleSearchCep = async (event: FormEvent) => {
     event.preventDefault();
+    setIsSearching(true);
 
-    const { data } = await api.get(`/cep/${searchRef.current.value}`);
+    try {
+      const { data } = await api.get(`/cep/${searchRef.current.value}`);
 
-    if (data.data.erro) {
-      setCepInfo(null);
+      setIsSearching(false);
+      if (data.data.erro) {
+        setCepInfo(null);
+        return;
+      }
+
+      setCepInfo(data.data);
+    } catch (err) {
+      console.log(err);
       return;
     }
-
-    setCepInfo(data.data);
   };
 
   return (
@@ -34,7 +42,9 @@ export default function Home() {
       <h1>CEP Helper</h1>
       <form onSubmit={handleSearchCep}>
         <input type="text" placeholder="Digite um cep" ref={searchRef} />
-        <button type="submit">Buscar</button>
+        <button type="submit">
+          {isSearching ? <div className={styles.spinner} /> : "Buscar"}
+        </button>
       </form>
       {cepInfo ? (
         <div className={styles.infoContainer}>
