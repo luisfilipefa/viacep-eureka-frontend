@@ -1,11 +1,14 @@
 import "../styles/global.scss";
 
-import { CepInfoProvider } from "../contexts/cepInfoContext";
+import { CepInfoProvider } from "../contexts/CepInfoContext";
+import { FormProvider } from "../contexts/FormContext";
 
 export default function MyApp({ Component, pageProps }) {
   return (
     <CepInfoProvider>
-      <Component {...pageProps} />
+      <FormProvider>
+        <Component {...pageProps} />
+      </FormProvider>
     </CepInfoProvider>
   );
 }
