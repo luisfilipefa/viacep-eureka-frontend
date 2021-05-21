@@ -46,6 +46,7 @@ export default function Home() {
     setCepInfo(data.cepInfo);
 
     setValue("cep", "");
+    setFocus("cep");
   };
 
   // Função utilizada para resetar o valor do input e do estado cepInfo
