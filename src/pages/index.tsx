@@ -1,9 +1,11 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 import { FiX } from "react-icons/fi";
+import Head from "next/head";
 import { api } from "../services/api";
 import styles from "../styles/home.module.scss";
 
+// Interface do Typescript para os dados recebidos da API
 interface CepInfo {
   cep: string;
   logradouro: string;
@@ -14,73 +16,84 @@ interface CepInfo {
 }
 
 export default function Home() {
-  const [cepInfo, setCepInfo] = useState<CepInfo | null | undefined>(null);
+  const [cepInfo, setCepInfo] = useState<CepInfo | null>();
   const [isSearching, setIsSearching] = useState(false);
   const searchRef = useRef<HTMLInputElement>();
 
+  // Função chamada após o submit do form, que irá fazer uma busca na API
+  // pelo cep capturado de searchRef.current.value e setar o estado de cepInfo
+  // com o valor recebido
   const handleSearchCep = async (event: FormEvent) => {
-    try {
-      event.preventDefault();
+    event.preventDefault();
 
-      setIsSearching(true);
+    setIsSearching(true);
 
-      const { data } = await api.get(`/cep/${searchRef.current.value}`);
+    const { data } = await api.get(`/cep/${searchRef.current.value}`);
 
-      setIsSearching(false);
+    setIsSearching(false);
 
-      if (data.data.erro) {
-        setCepInfo(undefined);
-        return;
-      }
+    setCepInfo(data.cepInfo);
 
-      setCepInfo(data.data);
-    } catch (err) {
-      console.log(err);
-      return;
-    }
+    searchRef.current.value = "";
   };
 
+  // Função utilizada para resetar o valor do input e do estado cepInfo
   const handleClearSearch = () => {
     searchRef.current.value = "";
+    searchRef.current.focus();
     setCepInfo(null);
   };
 
+  // Hook chamado em toda primeira montagem do componente (atualização da página)
+  useEffect(() => {
+    handleClearSearch();
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <h1>CEP Helper</h1>
-      <form onSubmit={handleSearchCep}>
-        <div>
-          <input type="text" placeholder="Digite um cep" ref={searchRef} />
-          <button onClick={handleClearSearch}>
-            <FiX />
+    <>
+      <Head>
+        <title>CEP Helper</title>
+      </Head>
+      <div className={styles.container}>
+        <h1>CEP Helper</h1>
+        <form onSubmit={handleSearchCep}>
+          <div className={styles.searchContainer}>
+            <input type="text" placeholder="Digite um cep" ref={searchRef} />
+            <FiX onClick={handleClearSearch} />
+          </div>
+          <button type="submit">
+            {isSearching ? <div className={styles.spinner} /> : "Buscar"}
           </button>
-        </div>
-        <button type="submit">
-          {isSearching ? <div className={styles.spinner} /> : "Buscar"}
-        </button>
-      </form>
-      {cepInfo ? (
-        <div className={styles.infoContainer}>
-          <h3>CEP {cepInfo.cep}</h3>
-          <p>
-            <strong>Cidade</strong>: {cepInfo.localidade}{" "}
-            {cepInfo.uf && ` | ${cepInfo.uf}`}
-          </p>
-          <p>
-            <strong>Rua</strong>: {cepInfo.logradouro}{" "}
-            {cepInfo.complemento && ` | ${cepInfo.complemento}`}
-          </p>
-          <p>
-            <strong>Bairro</strong>: {cepInfo.bairro}
-          </p>
-        </div>
-      ) : typeof cepInfo === "undefined" ? (
-        <div className={styles.emptyContainer}>
-          <p>Ops, não consegui encontrar nenhuma informação.</p>
-        </div>
-      ) : (
-        ""
-      )}
-    </div>
+        </form>
+        {!cepInfo ? (
+          ""
+        ) : cepInfo.cep === "" ? (
+          <div className={styles.emptyContainer}>
+            <p>Ops, não consegui encontrar nenhuma informação.</p>
+          </div>
+        ) : (
+          <div className={styles.infoContainer}>
+            <h3>CEP {cepInfo.cep}</h3>
+            <p>
+              <strong>Cidade: </strong>
+              {cepInfo.localidade} {cepInfo.uf && ` | ${cepInfo.uf}`}
+            </p>
+            {cepInfo.logradouro && (
+              <p>
+                <strong>Rua: </strong>
+                {cepInfo.logradouro}{" "}
+                {cepInfo.complemento && ` | ${cepInfo.complemento}`}
+              </p>
+            )}
+            {cepInfo.bairro && (
+              <p>
+                <strong>Bairro: </strong>
+                {cepInfo.bairro}
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 }
