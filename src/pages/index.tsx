@@ -1,9 +1,13 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import * as yup from "yup";
+
+import { useEffect, useState } from "react";
 
 import { FiX } from "react-icons/fi";
 import Head from "next/head";
 import { api } from "../services/api";
 import styles from "../styles/home.module.scss";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 // Interface do Typescript para os dados recebidos da API
 interface CepInfo {
@@ -16,31 +20,38 @@ interface CepInfo {
 }
 
 export default function Home() {
+  // Definição do schema utilizado no form (biblioteca yup)
+  const inputSchema = yup.object().shape({
+    cep: yup.string().required("CEP obrigatório").max(8).min(8),
+  });
+
+  // Extraindo algumas funções e objetos do hook useForm da biblioteca react-hook-form
+  // e definindo o resolver (que vai validar o form) como o yupResolver que recebe o esquema
+  // definido acima
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setFocus,
+    formState: { isSubmitting, errors },
+  } = useForm({ resolver: yupResolver(inputSchema) });
   const [cepInfo, setCepInfo] = useState<CepInfo | null>();
-  const [isSearching, setIsSearching] = useState(false);
-  const searchRef = useRef<HTMLInputElement>();
 
   // Função chamada após o submit do form, que irá fazer uma busca na API
-  // pelo cep capturado de searchRef.current.value e setar o estado de cepInfo
-  // com o valor recebido
-  const handleSearchCep = async (event: FormEvent) => {
-    event.preventDefault();
-
-    setIsSearching(true);
-
-    const { data } = await api.get(`/cep/${searchRef.current.value}`);
-
-    setIsSearching(false);
+  // pelo cep capturado do input e setar o estado de cepInfo
+  // com o valor recebido da API
+  const onSubmit = async (values: { cep: string }) => {
+    const { data } = await api.get(`/cep/${values.cep}`);
 
     setCepInfo(data.cepInfo);
 
-    searchRef.current.value = "";
+    setValue("cep", "");
   };
 
   // Função utilizada para resetar o valor do input e do estado cepInfo
   const handleClearSearch = () => {
-    searchRef.current.value = "";
-    searchRef.current.focus();
+    setValue("cep", "");
+    setFocus("cep");
     setCepInfo(null);
   };
 
@@ -56,13 +67,25 @@ export default function Home() {
       </Head>
       <div className={styles.container}>
         <h1>CEP Helper</h1>
-        <form onSubmit={handleSearchCep}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.searchContainer}>
-            <input type="text" placeholder="Digite um cep" ref={searchRef} />
+            {/* A função register vem da bilioteca react-hook-form e tem a função de criar uma ref para o input */}
+            <input
+              name="cep"
+              type="text"
+              placeholder="Digite um cep"
+              {...register("cep")}
+            />
             <FiX onClick={handleClearSearch} />
           </div>
+          {errors.cep && (
+            <p className={styles.error}>
+              CEP deve possuir no{" "}
+              {errors.cep.type === "min" ? "mínimo" : "máximo"} 8 caracteres
+            </p>
+          )}
           <button type="submit">
-            {isSearching ? <div className={styles.spinner} /> : "Buscar"}
+            {isSubmitting ? <div className={styles.spinner} /> : "Buscar"}
           </button>
         </form>
         {!cepInfo ? (

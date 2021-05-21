@@ -15,9 +15,16 @@
     display: flex;
     flex-direction: column;
 
+    .error {
+      font-size: 1rem;
+      color: red;
+      margin-bottom: 1rem;
+    }
+
     .searchContainer {
       display: flex;
       align-items: center;
+      justify-content: center;
 
       input {
         padding: 0.8rem;
