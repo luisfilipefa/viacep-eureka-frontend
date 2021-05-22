@@ -2,7 +2,7 @@
 
 Projeto desenvolvido no processo seletivo da Eureka Labs, com o objetivo de fornecer ao usuário informações sobre um CEP ao digitar seu valor no campo do formulário.
 
-![image](https://user-images.githubusercontent.com/70351489/119241284-ab7cc200-bb2b-11eb-9848-470d8a192760.png) 
+![image](https://user-images.githubusercontent.com/70351489/119241284-ab7cc200-bb2b-11eb-9848-470d8a192760.png)
 ![image](https://user-images.githubusercontent.com/70351489/119241303-d535e900-bb2b-11eb-9ae8-d1d01bb7ec59.png)
 
 ## Overview
@@ -31,7 +31,7 @@ Para a parte do frontend foi utilizado Next.js com Typescript. Neste caso poderi
 
 ### Backend
 
-Para a construção do backend utilizei Node.js e também Typescript, e Express para criação das rotas e middlewares. Mais detalhes sobre o backend podem ser encontrados no repositório do mesmo: `https://github.com/luisfilipefa/viacep-eureka-backend.git`;
+Para a construção do backend utilizei Node.js e também Typescript, e Express para criação das rotas e middlewares. Mais detalhes sobre o backend podem ser encontrados no repositório do mesmo: https://github.com/luisfilipefa/viacep-eureka-backend.git ;
 
 ### Testes
 
@@ -59,4 +59,8 @@ Para rodar os testes, basta executar `yarn test`;
       - Iniciar o server com `yarn dev` ou `npm run dev`;
 
     - Acessando backend em produção:
-      - Criar um arquivo .env na raiz do projeto frontend contendo a variável `NEXT_PUBLIC_API_URL` com o valor `https://viacep-eureka-backend.herokuapp.com/api`;
+      - Criar um arquivo .env na raiz do projeto frontend contendo a variável `NEXT_PUBLIC_API_URL=https://viacep-eureka-backend.herokuapp.com/api`;
+
+## Acessando app em produção
+
+Navegar para https://viacep-eureka-frontend.vercel.app/ ;
