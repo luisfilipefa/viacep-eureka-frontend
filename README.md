@@ -34,6 +34,10 @@ Para a construção do backend utilizei Node.js e também Typescript, e Express 
 
 Devido a simplicidade da estrutura do backend, não cheguei a criar testes automatizados, testei a única rota pelo Postman mesmo. Já para o frontend criei dois testes unitários, que testavam o componente de Form e o CepInfoItem, responsável por renderizar as informações do CEP. As bibliotecas que utilizei para escrever os testes foram o Jest e React Testing Library, juntas de alguns pacotes adicionais voltados a escrita de testes utilizando Typescript.
 
+### Rodando os testes
+
+Para rodar os testes, basta executar `yarn test`;
+
 ## Como rodar a aplicação localmente
 
 - Clonar repositório: `git clone https://github.com/luisfilipefa/viacep-eureka-frontend.git`;
