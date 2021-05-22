@@ -1,9 +1,8 @@
 import { fireEvent, render } from "@testing-library/react";
 
-import { CepInfoContext } from "../../contexts/CepInfoContext";
+import { CepInfoProvider } from "../../contexts/CepInfoContext";
 import Form from "../../components/Form";
 import { FormContext } from "../../contexts/FormContext";
-import { api } from "../../services/api";
 import { mocked } from "ts-jest/utils";
 import { useForm } from "react-hook-form";
 
@@ -21,15 +20,13 @@ describe("Form component", () => {
     useFormMocked.mockReturnValueOnce(form);
 
     const { getByText } = render(
-      <CepInfoContext.Provider
-        value={{ cepInfo: {}, setCepInfo: jest.fn() } as any}
-      >
+      <CepInfoProvider>
         <FormContext.Provider
           value={{ form, onSubmit: jest.fn(), handleClearSearch: jest.fn() }}
         >
           <Form />
         </FormContext.Provider>
-      </CepInfoContext.Provider>
+      </CepInfoProvider>
     );
 
     expect(getByText("Buscar")).toBeInTheDocument();
@@ -46,15 +43,13 @@ describe("Form component", () => {
     useFormMocked.mockReturnValueOnce(form);
 
     const { container } = render(
-      <CepInfoContext.Provider
-        value={{ cepInfo: {}, setCepInfo: jest.fn() } as any}
-      >
+      <CepInfoProvider>
         <FormContext.Provider
           value={{ form, onSubmit: jest.fn(), handleClearSearch: jest.fn() }}
         >
           <Form />
         </FormContext.Provider>
-      </CepInfoContext.Provider>
+      </CepInfoProvider>
     );
 
     expect(container.querySelector(".spinner")).toBeInTheDocument();
@@ -71,15 +66,13 @@ describe("Form component", () => {
     useFormMocked.mockReturnValueOnce(form);
 
     const { getByText } = render(
-      <CepInfoContext.Provider
-        value={{ cepInfo: {}, setCepInfo: jest.fn() } as any}
-      >
+      <CepInfoProvider>
         <FormContext.Provider
           value={{ form, onSubmit: jest.fn(), handleClearSearch: jest.fn() }}
         >
           <Form />
         </FormContext.Provider>
-      </CepInfoContext.Provider>
+      </CepInfoProvider>
     );
 
     expect(
@@ -87,7 +80,7 @@ describe("Form component", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls handleSubmit when submit button is clicked", () => {
+  it("calls handleSubmit when form is submitted", () => {
     const { handleSubmit } = useForm();
     const form = {
       register: jest.fn(),
@@ -99,15 +92,13 @@ describe("Form component", () => {
     useFormMocked.mockReturnValueOnce(form);
 
     const { container } = render(
-      <CepInfoContext.Provider
-        value={{ cepInfo: {}, setCepInfo: jest.fn() } as any}
-      >
+      <CepInfoProvider>
         <FormContext.Provider
           value={{ form, onSubmit: jest.fn(), handleClearSearch: jest.fn() }}
         >
           <Form />
         </FormContext.Provider>
-      </CepInfoContext.Provider>
+      </CepInfoProvider>
     );
 
     const formElem = container.querySelector(".form");
