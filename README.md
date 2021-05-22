@@ -1,34 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# CEP Helper
 
-## Getting Started
+Projeto desenvolvido no processo seletivo da Eureka Labs, com o objetivo de fornecer ao usuário informações sobre um CEP ao digitar seu valor no campo do formulário.
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+De forma geral, a aplicação é bem simples, basta o usuário digitar um CEP contendo apenas números, somando 8 caracteres no total e clicar no botão de busca. O input possui validação do número de caracteres, então caso possua menos ou mais de 8 números, o valor não será processado, e a busca não será feita, e o usuário será informado do erro abaixo do input.
+Caso o valor passe pela validação, uma função é chamada, fazendo uma chamada ao backend passando o CEP informado. No backend é feito uma verificação se as informações daquele CEP já existem em cache, caso existam, é retornado o valor do cache, e caso não existam, é feito uma requisição ao serviço externo ViaCep. Caso o serviço retorne as informações, as mesmas são salvas em cache e retornadas ao usuário, caso não existam informações sobre aquele CEP é retornado um objeto vazio.
+Voltando ao frontend, quando o backend retorna as informações do CEP, o estado contendo estas informações é atualizado e mostrado em tela, caso o retorno tenha sido vazio, ou seja, as informações daquele CEP não foram encontradas no serviço ViaCep, é exibido uma mensagem de que não foram encontradas informações sobre aquele CEP.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configurando o backend
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Para testar a aplicação localmente, o backend pode ser clonado e acessado também localmente, ou pode ser acessado em produção.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- Acessando backend localmente:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+  - Clonar repositório: `git clone https://github.com/luisfilipefa/viacep-eureka-backend.git`;
+  - Instalar dependências: `yarn` ou `npm install`;
+  - Copiar o arquivo .env.example como .env e setar a variável de ambiente DB_URI que é o endereço do banco de dados (precisa ser mongoDB no formato URI);
+  - Iniciar o server com `yarn dev` ou `npm run dev`;
 
-## Learn More
+- Acessando backend em produção:
+  - Criar um arquivo .env na raiz do projeto frontend contendo a variável `NEXT_PUBLIC_API_URL` com o valor `https://viacep-eureka-backend.herokuapp.com/api`;
 
-To learn more about Next.js, take a look at the following resources:
+## Como rodar a aplicação localmente
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Clonar repositório: `git clone https://github.com/luisfilipefa/viacep-eureka-frontend.git`;
+- Instalar dependências: `yarn` ou `npm install`;
+- Ter o backend configurado;
+- Iniciar o app com `yarn dev` ou `npm run dev`;

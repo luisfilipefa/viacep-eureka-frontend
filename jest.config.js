@@ -7,4 +7,13 @@ module.exports = {
   moduleNameMapper: {
     "\\.(scss)$": "identity-obj-proxy",
   },
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "./src/**",
+    "!./src/styles/**",
+    "!./src/services/**",
+    "!./src/@types/**",
+    "!./src/hooks/**",
+  ],
+  coverageDirectory: "./src/tests/coverage",
 };

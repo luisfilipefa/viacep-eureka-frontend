@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 jest.mock("react-hook-form");
 
 describe("Form component", () => {
-  it("renders correctly", () => {
+  it("should render correctly", () => {
     const form = {
       register: jest.fn(),
       handleSubmit: jest.fn(),
@@ -32,7 +32,7 @@ describe("Form component", () => {
     expect(getByText("Buscar")).toBeInTheDocument();
   });
 
-  it("renders correctly when is submitting", () => {
+  it("should render correctly when is submitting", () => {
     const form = {
       register: jest.fn(),
       handleSubmit: jest.fn(),
@@ -55,7 +55,7 @@ describe("Form component", () => {
     expect(container.querySelector(".spinner")).toBeInTheDocument();
   });
 
-  it("renders error message when input has less or more then 8 characters", () => {
+  it("should render error message when input has less then 8 characters", () => {
     const form = {
       register: jest.fn(),
       handleSubmit: jest.fn(),
@@ -80,7 +80,32 @@ describe("Form component", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls handleSubmit when form is submitted", () => {
+  it("should render error message when input has more then 8 characters", () => {
+    const form = {
+      register: jest.fn(),
+      handleSubmit: jest.fn(),
+      formState: { isSubmitting: false, errors: { cep: { type: "max" } } },
+    } as any;
+    const useFormMocked = mocked(useForm);
+
+    useFormMocked.mockReturnValueOnce(form);
+
+    const { getByText } = render(
+      <CepInfoProvider>
+        <FormContext.Provider
+          value={{ form, onSubmit: jest.fn(), handleClearSearch: jest.fn() }}
+        >
+          <Form />
+        </FormContext.Provider>
+      </CepInfoProvider>
+    );
+
+    expect(
+      getByText("CEP deve possuir no máximo 8 caracteres")
+    ).toBeInTheDocument();
+  });
+
+  it("should call handleSubmit when form is submitted", () => {
     const { handleSubmit } = useForm();
     const form = {
       register: jest.fn(),

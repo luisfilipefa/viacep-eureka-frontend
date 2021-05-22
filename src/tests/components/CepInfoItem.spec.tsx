@@ -7,7 +7,7 @@ import { useCepInfo } from "../../hooks/useCepInfo";
 jest.mock("../../hooks/useCepInfo");
 
 describe("CepInfoItem component", () => {
-  it("renders correctly when cep info is not found", () => {
+  it("should render error message when cep info is not found", () => {
     const useCepInfoMocked = mocked(useCepInfo);
 
     useCepInfoMocked.mockReturnValueOnce({
@@ -26,7 +26,7 @@ describe("CepInfoItem component", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders correctly when cep info is found", () => {
+  it("should render correctly when cep info is found", () => {
     const useCepInfoMocked = mocked(useCepInfo);
 
     useCepInfoMocked.mockReturnValueOnce({
