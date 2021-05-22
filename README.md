@@ -2,6 +2,9 @@
 
 Projeto desenvolvido no processo seletivo da Eureka Labs, com o objetivo de fornecer ao usuário informações sobre um CEP ao digitar seu valor no campo do formulário.
 
+![image](https://user-images.githubusercontent.com/70351489/119241284-ab7cc200-bb2b-11eb-9848-470d8a192760.png) 
+![image](https://user-images.githubusercontent.com/70351489/119241303-d535e900-bb2b-11eb-9ae8-d1d01bb7ec59.png)
+
 ## Overview
 
 ### Funcionamento
