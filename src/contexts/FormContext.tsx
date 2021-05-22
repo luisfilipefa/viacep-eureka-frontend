@@ -25,7 +25,7 @@ export function FormProvider({ children }: FormProviderProps) {
     cep: yup.string().required("CEP obrigatório").max(8).min(8),
   });
 
-  // Extraindo algumas funções e objetos do hook useForm da biblioteca react-hook-form
+  // Usando o hook useForm da biblioteca react-hook-form
   // e definindo o resolver (que vai validar o form) como o yupResolver que recebe o esquema
   // definido acima
   const form = useForm({ resolver: yupResolver(inputSchema) });
@@ -36,12 +36,16 @@ export function FormProvider({ children }: FormProviderProps) {
   // pelo cep capturado do input e setar o estado de cepInfo
   // com o valor recebido da API
   const onSubmit = async (values: { cep: string }) => {
-    const { data } = await api.get(`/cep/${values.cep}`);
+    try {
+      const { data } = await api.get(`/cep/${values.cep}`);
 
-    setCepInfo(data.cepInfo);
+      setCepInfo(data.cepInfo);
 
-    form.setValue("cep", "");
-    form.setFocus("cep");
+      form.setValue("cep", "");
+      form.setFocus("cep");
+    } catch (err) {
+      alert("Erro ao se conectar a API.");
+    }
   };
 
   // Função utilizada para resetar o valor do input e do estado cepInfo
