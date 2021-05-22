@@ -3,7 +3,7 @@ import { fireEvent, render } from "@testing-library/react";
 import { CepInfoContext } from "../../contexts/CepInfoContext";
 import Form from "../../components/Form";
 import { FormContext } from "../../contexts/FormContext";
-import { debug } from "console";
+import { api } from "../../services/api";
 import { mocked } from "ts-jest/utils";
 import { useForm } from "react-hook-form";
 
@@ -87,7 +87,7 @@ describe("Form component", () => {
     ).toBeInTheDocument();
   });
 
-  it("calls onSubmit when submit button is clicked", () => {
+  it("calls handleSubmit when submit button is clicked", () => {
     const { handleSubmit } = useForm();
     const form = {
       register: jest.fn(),
