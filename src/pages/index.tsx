@@ -10,15 +10,13 @@ export default function Home() {
         <title>CEP Helper</title>
       </Head>
 
-      <body>
-        <section className={styles.container}>
-          <header>
-            <h1>CEP Helper</h1>
-          </header>
-          <Form />
-          <CepInfoItem />
-        </section>
-      </body>
+      <section className={styles.container}>
+        <header>
+          <h1>CEP Helper</h1>
+        </header>
+        <Form />
+        <CepInfoItem />
+      </section>
     </>
   );
 }
