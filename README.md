@@ -55,7 +55,8 @@ Para rodar os testes, basta executar `yarn test`;
 
       - Clonar repositório: `git clone https://github.com/luisfilipefa/viacep-eureka-backend.git`;
       - Instalar dependências: `yarn` ou `npm install`;
-      - Copiar o arquivo .env.example como .env e setar a variável de ambiente DB_URI que é o endereço do banco de dados (precisa ser mongoDB no formato URI);
+      - Criar um banco MongoDB;
+      - Copiar o arquivo .env.example como .env e setar a variável de ambiente DB_URI, ex: `DB_URI=mongodb+srv://username:password@db0.example.com/database`;
       - Iniciar o server com `yarn dev` ou `npm run dev`;
 
     - Acessando backend em produção:
